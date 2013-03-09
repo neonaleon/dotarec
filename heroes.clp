@@ -130,14 +130,14 @@
 
 ;; Rules
 
-(defrule test-rule
-	(hero (heroName ?n) (heroType ?t))
-	?team <- (team (count ?c) (num_disabler ?d) (num_physical ?p) (num_spell ?s) (num_useless ?u))
-	(test (< ?c 5))
-	=>
-	(switch ?t
-		(case disabler then (modify ?team (count (+ ?c 1)) (num_disabler (+ ?d 1))))
-		(case physical then (modify ?team (count (+ ?c 1)) (num_physical (+ ?p 1))))
-		(case spell then (modify ?team (count (+ ?c 1)) (num_spell (+ ?s 1))))
-		(case useless then (modify ?team (count (+ ?c 1)) (num_useless (+ ?u 1)))))
-)
+;;(defrule test-rule
+;;	(hero (heroName ?n) (heroType ?t))
+;;	?team <- (team (count ?c) (num_disabler ?d) (num_physical ?p) (num_spell ?s) (num_useless ?u))
+;;	(test (< ?c 5))
+;;	=>
+;;	(switch ?t
+;;		(case disabler then (modify ?team (count (+ ?c 1)) (num_disabler (+ ?d 1))))
+;;		(case physical then (modify ?team (count (+ ?c 1)) (num_physical (+ ?p 1))))
+;;		(case spell then (modify ?team (count (+ ?c 1)) (num_spell (+ ?s 1))))
+;;		(case useless then (modify ?team (count (+ ?c 1)) (num_useless (+ ?u 1)))))
+;;)
