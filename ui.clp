@@ -58,12 +58,18 @@
 ; ; Check if hero specified by player exists.
 (defrule check-hero-exists
 	?check <- (checkHero ?name)
-	(exists (hero (heroName ?name)))
-	?opTeam <- (team (count ?count))
+	(hero (heroName ?name) (heroType ?type))
+	?opTeam <- (team (count ?count) (num_disabler ?num_d) (num_physical ?num_p) (num_spell ?num_s) (num_useless ?num_u))
 	=>
-	; ; TODO add hero to enemy team fact
-	(modify ?opTeam (count (+ ?count 1)))
-	(printout t ?name " added to enemy team fact." crlf)
+	(bind ?count (+ ?count 1))
+	(switch ?type
+		(case disabler then (bind ?num_d (+ ?num_d 1)))
+		(case physical then (bind ?num_p (+ ?num_p 1)))
+		(case spell then (bind ?num_s (+ ?num_s 1)))
+		(case useless then (bind ?num_u (+ ?num_u 1)))
+	)
+	(modify ?opTeam (count ?count) (num_disabler ?num_d) (num_physical ?num_p) (num_spell ?num_s) (num_useless ?num_u))
+	;;(printout t ?name " added to enemy team fact." crlf)
 	(retract ?check)
 )
 
