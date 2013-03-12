@@ -40,23 +40,40 @@
 
 ; ; Find out what heroes are on the opposing team.
 (defrule ask-opponents
+	(not (checkHero ?))
 	?opTeam <- (team (count ?count&: (< ?count 5)))
 	=>
-	(printout t "What are the heroes on the opposing team?" crlf)
-	(while (< ?count 5)
-		(printout t "Hero (#" (+ ?count 1) ") : ")
-		(bind ?ans (read))
-		;;(if
-			; ; TODO check whether ?ans is a valid hero name
-		;;then
-			; ; TODO add hero into facts
-			(printout t ?ans " added to opposing team fact." crlf)
-			(bind ?count (+ ?count 1))
-		;;else
-		;;	(printout t ?ans " is not a valid hero!" crlf)
-		;;)
+	(if
+		(= ?count -1)
+	then
+		(printout t "What are the heroes on the opposing team?" crlf)
+		(bind ?count 0)
+		(modify ?opTeam (count ?count))
 	)
-	(modify ?opTeam (count ?count))
+	(printout t "Hero (#" (+ ?count 1) ") : ")
+	(bind ?ans (lowcase (readline)))
+	(assert (checkHero (str-cat ?ans)))
+)
+
+; ; Check if hero specified by player exists.
+(defrule check-hero-exists
+	?check <- (checkHero ?name)
+	(exists (hero (heroName ?name)))
+	?opTeam <- (team (count ?count))
+	=>
+	; ; TODO add hero to enemy team fact
+	(modify ?opTeam (count (+ ?count 1)))
+	(printout t ?name " added to enemy team fact." crlf)
+	(retract ?check)
+)
+
+; ; If hero specified does not exist.
+(defrule check-hero-not-exists
+	?check <- (checkHero ?name)
+	(not (hero (heroName ?name)))
+	=>
+	(printout t ?name " is not a valid hero name! Please try again." crlf)
+	(retract ?check)
 )
 
 ; ; Ask player for next action.

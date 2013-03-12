@@ -126,7 +126,7 @@
 					)
 
 (deffacts opponentTeam 
-	(team (count 0) (num_disabler 0) (num_physical 0) (num_spell 0) (num_useless 0)))
+	(team (count -1) (num_disabler 0) (num_physical 0) (num_spell 0) (num_useless 0)))
 
 ;; Rules
 
