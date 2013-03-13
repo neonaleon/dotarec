@@ -14,7 +14,6 @@
 	(recommend (item boots))
 	(recommend (item BKB))
 	(recommend (item guinsoo))
-	(highWeight 0)
 	(player (gold 2000)))
 
 
@@ -50,18 +49,11 @@
 		(modify ?rec (weight (+ ?w ?r)) (save NO))
 	else
 		(modify ?rec (weight (+ ?w ?r)) (save YES))))
-
-(defrule findHighestWeight
-	?h <- (highWeight ?w1)
-	(recommend (weight ?w2&:(> ?w2 ?w1)))
-	=>  
-	(retract ?h)
-	(assert (highWeight ?w2)))
 	
 (defrule decision
 	(declare (salience -1))
-	(highWeight ?w1)
-	(recommend (item ?i) (weight ?w2&:(= ?w2 ?w1)) (save ?s))
+	(recommend (item ?i) (weight ?w1) (save ?s))
+	(not (recommend (weight ?w2&:(> ?w2 ?w1))))
 	(not (decided))
 	=>
 	(switch ?s
@@ -82,9 +74,6 @@
 	(declare (salience 99))
 	?r <- (resetRec)
 	?d <- (decided)
-	?h <- (highWeight ?w)
 	=>
 	(retract ?r)
-	(retract ?d)
-	(retract ?h)
-	(assert (highWeight 0)))
+	(retract ?d))
