@@ -9,5 +9,4 @@
 
 ;; start running program
 (reset)
-(hero-selection begin) ;; by right should be called by program logic in ui.clp
 (run)
