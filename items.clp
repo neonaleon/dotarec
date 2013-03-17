@@ -1,7 +1,7 @@
 (deftemplate item
 	(slot name (type STRING))
 	(slot gold (type INTEGER))
-	(multislot recipe (type STRING) (default NIL))
+	(multislot recipe (type STRING) (default "None"))
 )
 
 (deffacts items
@@ -47,4 +47,98 @@
 	(item (name "Scythe of Vyse") (recipe "Mystic Staff" "Ultimate Orb" "Void Stone"))
 	(item (name "Shiva's Guard") (recipe "Mystic Staff" "Platemail" "Shiva's Guard Recipe"))
 	(item (name "Yasha") (recipe "Blade of Alacrity" "Band of Elvenskin" "Yasha Recipe"))
+)
+
+; ; <for-testing>
+(deftemplate player
+	(slot name (type SYMBOL))
+	(multislot inventory (type STRING))
+)
+
+; ; <for-testing>
+(deffacts players
+	(player (name a5) (inventory "Scythe of Vyse" "Blade of Alacrity" "Band of Elvenskin" "Yasha Recipe"))
+	(player (name b) (inventory "Boots of Speed" "Belt of Strength" "Gloves of Haste"))
+	(player (name c) (inventory "Boots of Speed" "Belt of Strength" "Town Portal Scroll"))
+	(player (name d4) (inventory "Power Treads" "Demon Edge" "Town Portal Scroll"))
+	(player (name e) (inventory "Belt of Strength" "Mithril Hammer" "Ogre Club" "Javelin" "Demon Edge"))
+	(player (name f2) (inventory "Magic Wand"))
+	(player (name g) (inventory "Tango" "Healing Salve" "Iron Branch"))
+)
+
+; ; <for-testing>
+(deftemplate phase
+	(slot number (type INTEGER))
+	(multislot items (type STRING))
+)
+
+; ; <for-testing>
+(deffacts phases
+	(phase (number 1) (items "Tango" "Tango" "Healing Salve" "Iron Branch" "Iron Branch" "Iron Branch"))
+	(phase (number 1) (items "Animal Courier" "Tango" "Healing Salve" "Iron Branch" "Iron Branch"))
+	
+	(phase (number 2) (items "Magic Wand"))
+	(phase (number 2) (items "Bottle"))
+	(phase (number 2) (items "Boots of Speed"))
+	
+	(phase (number 3) (items "Perseverance"))
+	
+	(phase (number 4) (items "Power Treads"))
+	(phase (number 4) (items "Ultimate Orb"))
+	(phase (number 4) (items "Black King Bar"))
+	(phase (number 4) (items "Ghost Scepter"))
+	
+	(phase (number 5) (items "Scythe of Vyse"))
+	
+	(phase (number 6) (items "Monkey King Bar"))
+	
+	(phase (number 7) (items "Shiva's Guard"))
+	(phase (number 7) (items "Manta Style"))
+	
+	(phase (number 8) (items "Boots of Travel"))
+)
+
+; ; <for-testing>
+(deffacts initial-facts
+	(current-phase 1)
+	(current-phase 2)
+	(current-phase 3)
+	(current-phase 4)
+	(current-phase 5)
+	(current-phase 6)
+	(current-phase 7)
+	(current-phase 8)
+)
+
+; ; Item Combination rule
+; ; Bug - duplicate items in recipe not considered in subsetp
+(defrule item-combination
+	(player (name ?n1) (inventory $?i1))
+	(item (name ?n2) (recipe $?i2))
+	(test (subsetp $?i2 $?i1))
+	=>
+	(assert (combine ?n1 ?n2))
+)	
+
+; ; Town Portal Scroll Rule
+; ; not exists boots of travel check redundant? have boots of speed or power treads => no boots of travel
+(defrule town-portal
+	(player (name ?n) (inventory $?i))
+	(or (test (subsetp (create$ "Boots of Speed") $?i))
+		(test (subsetp (create$ "Power Treads") $?i)))
+	(not (test (subsetp (create$ "Boots of Travel") $?i)))	
+	(not (test (subsetp (create$ "Town Portal Scroll") $?i)))
+	=>
+	(assert (recommend ?n "Town Portal Scroll"))
+)
+
+; ; Phase Changing Rule
+; ; Bug - duplicate items in items not considered in subsetp
+(defrule phase-change
+	(current-phase ?p)
+	(player (name ?n) (inventory $?i1))
+	(phase (number ?p) (items $?i2))
+	(test (subsetp $?i2 $?i1))
+	=>
+	(assert (phase-change ?n ?p))
 )
