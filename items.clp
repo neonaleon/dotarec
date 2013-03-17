@@ -48,3 +48,18 @@
 	(item (name "Shiva's Guard") (recipe "Mystic Staff" "Platemail" "Shiva's Guard Recipe"))
 	(item (name "Yasha") (recipe "Blade of Alacrity" "Band of Elvenskin" "Yasha Recipe"))
 )
+
+; ; <for-testing>
+(deftemplate player
+	(slot playstyle (allowed-values defensive neutral aggressive NIL)  (default NIL))
+	(slot gpm (type INTEGER))
+	(slot gold (type INTEGER))
+	(multislot inventory (type STRING))
+)
+
+; ; Item Combination rule
+(defrule item-combination
+	(player (inventory ?i))
+	(item (name ?n) (recipe ?r))
+
+)	
