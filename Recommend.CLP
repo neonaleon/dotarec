@@ -125,10 +125,6 @@
 	(modify ?recommend (weight (+ ?weight 1)))
 	(assert (fired recommend-bot))
 )
-
-(deffunction get-item-cost (?item-name ?inventory)
-	
-)
 	
 (defrule decision
 	(declare (salience -1))
