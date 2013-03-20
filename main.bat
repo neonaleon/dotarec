@@ -5,6 +5,9 @@
 
 ;; load files here
 (load "heroes.clp")
+(load "items.clp")
+;;(load "recommend.clp")
+(load "rules.clp")
 (load "ui.clp")
 
 ;; start running program

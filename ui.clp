@@ -157,3 +157,9 @@
 		(halt)
 	)
 )
+
+(defrule clear-heroes
+	(team (count ?count&: (= ?count 5)))
+	?h <- (hero ? ?)
+	=>
+	(retract ?h))
