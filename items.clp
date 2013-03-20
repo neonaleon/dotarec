@@ -110,35 +110,37 @@
 	(current-phase 8)
 )
 
+
+; ; Player template used in the following 3 rules are for testing
 ; ; Item Combination rule
-; ; Bug - duplicate items in recipe not considered in subsetp
 (defrule item-combination
-	(player (name ?n1) (inventory $?i1))
+	?p <- (player (name ?n1) (inventory $?i1))
 	(item (name ?n2) (recipe $?i2))
-	(test (subsetp $?i2 $?i1))
+	(test (subsetdp $?i2 $?i1))
 	=>
-	(assert (combine ?n1 ?n2))
+	(modify ?p (inventory (insert$ (remove-subset $?i2 $?i1) 1 ?n2)))
 )	
 
 ; ; Town Portal Scroll Rule
-; ; not exists boots of travel check redundant? have boots of speed or power treads => no boots of travel
 (defrule town-portal
+	?recommend <- (recommend (item "Town Portal Scroll"))
 	(player (name ?n) (inventory $?i))
 	(or (test (subsetp (create$ "Boots of Speed") $?i))
 		(test (subsetp (create$ "Power Treads") $?i)))
-	(not (test (subsetp (create$ "Boots of Travel") $?i)))	
+	;; (not (test (subsetp (create$ "Boots of Travel") $?i)))	
 	(not (test (subsetp (create$ "Town Portal Scroll") $?i)))
 	=>
-	(assert (recommend ?n "Town Portal Scroll"))
+	(modify ?recommend (weight 1000))
 )
 
 ; ; Phase Changing Rule
-; ; Bug - duplicate items in items not considered in subsetp
 (defrule phase-change
-	(current-phase ?p)
+	?cp <- (current-phase ?p)
 	(player (name ?n) (inventory $?i1))
 	(phase (number ?p) (items $?i2))
-	(test (subsetp $?i2 $?i1))
+	(test (subsetdp $?i2 $?i1))
 	=>
-	(assert (phase-change ?n ?p))
+	;; (printout t "phase change for " ?n " from " ?p " to " (+ ?p 1))
+	(retract ?cp)
+	(assert (current-phase (+ ?p 1)))
 )
