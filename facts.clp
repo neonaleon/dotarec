@@ -188,7 +188,7 @@
 	
 	; ; Current phase.
 	
-	(current-phase 1)
+	(current-phase 5)
 	
 	; ; Recommend.
 	
@@ -197,4 +197,7 @@
 	(recommend (item "Shiva's Guard"))
 	(recommend (item "Manta Style"))
 	(recommend (item "Boots of Travel"))
+	
+	; ; Decided.
+	(decided)
 )

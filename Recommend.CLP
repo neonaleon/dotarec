@@ -85,6 +85,7 @@
 			(retract ?g)
 		else
 			(printout t "Save for " ?i " next." crlf))
+		(modify ?question (stage main-question))
 	else
 		(bind ?found 0)
 		(loop-for-count (?a 1 (length$ $?r))
@@ -97,8 +98,7 @@
 		)
 		(if (= ?found 0) then (retract ?g))
 	)
-	(modify ?question (stage main-question))
-) 
+)
 
 (defrule resetRec
 	(declare (salience 100))
