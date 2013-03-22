@@ -1,24 +1,4 @@
-; ; User Interface
-
-; ; Question template.
-(deftemplate question
-	(slot stage (allowed-values suggest discard end NIL) (default NIL))
-)
-
-; ; <for-testing>
-(deftemplate player
-	(slot playstyle (allowed-values defensive neutral aggressive NIL)  (default NIL))
-	(slot gpm (type INTEGER))
-	(slot gold (type INTEGER))
-	(multislot inventory (type SYMBOL))
-)
-
-(deffacts test-facts
-	;;(player (playstyle neutral) (inventory item-1 item-2 item-3 item-4 item-5 item-6))
-	(player (inventory item-1 item-2 item-3 item-4 item-5 item-6))
-	(question)
-)
-; ; </for-testing>
+; ; User Interface Rules
 
 ; ; Ask player for his/her playing style.
 (defrule ask-playstyle
@@ -157,9 +137,3 @@
 		(halt)
 	)
 )
-
-(defrule clear-heroes
-	(team (count ?count&: (= ?count 5)))
-	?h <- (hero ? ?)
-	=>
-	(retract ?h))
