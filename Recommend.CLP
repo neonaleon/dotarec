@@ -69,7 +69,6 @@
 	(assert (goal ?i)))
 	
 (defrule nextItem
-	(decided)
 	?question <- (question (stage decide))
 	?g <- (goal ?i)
 	(item (name ?i) (gold ?itemG) (recipe $?r))
