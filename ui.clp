@@ -74,6 +74,7 @@
 	?question <- (question (stage main-question))
 	(player (playstyle ~NIL))
 	(team (count ?count&: (= ?count 5)))
+	(current-phase ?phase)
 	=>
 	(printout t "What would you like to do next?" crlf)
 	(printout t "(1) Get next suggestion" crlf)
@@ -82,7 +83,15 @@
 	(printout t "(other) Stop program" crlf)
 	(bind ?ans (read))
 	(switch ?ans
-		(case 1 then (modify ?question (stage gold-question)))
+		(case 1 then
+			(if
+				(<= ?phase 8)
+			then
+				(modify ?question (stage gold-question))
+			else
+				(modify ?question (stage decide))
+			)
+		)
 		(case 2 then (modify ?question (stage discard)))
 		(case 3 then (modify ?question (stage end)))
 	)

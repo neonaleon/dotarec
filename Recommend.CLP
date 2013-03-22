@@ -49,6 +49,21 @@
 	(assert (fired recommend-bot))
 )
 
+(defrule retract-recommend
+	(current-phase ?phase&: (> ?phase 8))
+	?recommend <- (recommend)
+	=>
+	(retract ?recommend)
+)
+
+(defrule no-recommendation
+	?question <- (question (stage decide))
+	(not (recommend))
+	=>
+	(printout t "No more items to recommend." crlf)
+	(modify ?question (stage main-question))
+)
+
 (defrule recommend-town-portal
 	?recommend <- (recommend (item "Town Portal Scroll"))
 	(player (inventory $?i))
@@ -96,7 +111,8 @@
 				(break)
 			)
 		)
-		(if (= ?found 0) then (retract ?g))
+		; ; Combined item now retracted in item-combination rule in items.clp.
+		;;(if (= ?found 0) then (retract ?g))
 	)
 )
 
