@@ -66,11 +66,10 @@
 	(not (recommend (weight ?w2&:(> ?w2 ?w1))))
 	(not (decided))
 	=>
-	(assert (goal ?i))
-	; ; Prevent repeat execution in case of tie
-	(assert (decided)))
+	(assert (goal ?i)))
 	
 (defrule nextItem
+	(decided)
 	?question <- (question (stage decide))
 	?g <- (goal ?i)
 	(item (name ?i) (gold ?itemG) (recipe $?r))
@@ -86,11 +85,13 @@
 		else
 			(printout t "Save for " ?i " next." crlf))
 		(modify ?question (stage main-question))
+		; ; Prevent repeat execution
+		(assert (decided))
 	else
 		(bind ?found 0)
 		(loop-for-count (?a 1 (length$ $?r))
 			(if (not (subsetp (create$ (nth$ ?a $?r)) $?inv))
-			then 
+			then
 				(bind ?found 1)
 				(assert (goal (nth$ ?a $?r)))	
 				(break)
