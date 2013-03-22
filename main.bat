@@ -9,7 +9,7 @@
 (load "functions.clp")
 (load "heroes.clp")
 (load "items.clp")
-;;(load "recommend.clp")
+(load "recommend.clp")
 ;;(load "rules.clp")
 (load "ui.clp")
 

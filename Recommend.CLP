@@ -68,9 +68,10 @@
 	=>
 	(assert (goal ?i))
 	; ; Prevent repeat execution in case of tie
-	(assert (decided))) 
+	(assert (decided)))
 	
 (defrule nextItem
+	?question <- (question (stage decide))
 	?g <- (goal ?i)
 	(item (name ?i) (gold ?itemG) (recipe $?r))
 	?p <- (player (gold ?playerG) (inventory $?inv))
@@ -96,6 +97,7 @@
 		)
 		(if (= ?found 0) then (retract ?g))
 	)
+	(modify ?question (stage main-question))
 ) 
 
 (defrule resetRec
