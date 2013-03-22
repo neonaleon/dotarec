@@ -9,7 +9,7 @@
 	(printout t "(1) Defensive" crlf)
 	(printout t "(2) Neutral" crlf)
 	(printout t "(3) Aggressive" crlf)
-	(printout t "(any other key) Stop program" crlf)
+	(printout t "(other) Stop program" crlf)
 	(bind ?ans (read))
 	(switch ?ans
 		; ; TODO modify player playstyle
@@ -79,7 +79,7 @@
 	(printout t "(1) Get next suggestion" crlf)
 	(printout t "(2) Use/discard/sell an item" crlf)
 	(printout t "(3) End session" crlf)
-	(printout t "(any other key) Stop program" crlf)
+	(printout t "(other) Stop program" crlf)
 	(bind ?ans (read))
 	(switch ?ans
 		(case 1 then (modify ?question (stage gold-question)))
@@ -115,7 +115,7 @@
 		(printout t "(" ?count ") " (nth$ ?count $?inventory) crlf)
 		(bind ?count (+ ?count 1))
 	)
-	(printout t "(any other key) Back" crlf)
+	(printout t "(other) Back" crlf)
 	(bind ?ans (read))
 	(if
 		(< (- ?ans 1) (length $?inventory))

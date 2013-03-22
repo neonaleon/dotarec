@@ -59,7 +59,7 @@
 	=>
 	(modify ?recommend (weight 1000))
 )
-	
+
 (defrule decision
 	(declare (salience -1))
 	(recommend (item ?i) (weight ?w1))
@@ -89,7 +89,7 @@
 	else
 		(bind ?found 0)
 		(loop-for-count (?a 1 (length$ $?r))
-			(if (not (subsetp (create$ (nth$ ?a $?r)) $?inv))
+			(if (not (subsetdp (create$ (nth$ ?a $?r)) $?inv))
 			then
 				(bind ?found 1)
 				(assert (goal (nth$ ?a $?r)))	
