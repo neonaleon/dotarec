@@ -79,10 +79,24 @@
 	(declare (salience -1))
 	(recommend (item ?i) (weight ?w1))
 	(not (recommend (weight ?w2&:(> ?w2 ?w1))))
-	(not (decided))
 	=>
 	(assert (goal ?i)))
 	
+(defrule nextItemBOT
+	(declare (salience 100))
+	?question <- (question (stage decide))
+	?g <- (goal "Boots of Travel")
+	?p <- (player (gold ?playerG) (inventory $?inv))
+	(test (subsetp (create$ "Power Treads") $?inv)))
+	=>
+	(if (<= 1750 ?playerG)
+	then
+		(printout t "Sell Power Threads and buy Boots of Travel next." crlf)
+		(modify ?p (gold (- ?playerG 1750)) (inventory (insert$ $?inv 1 "Boots of Travel")))
+	else
+		(printout t "Save for Boots of Travel next." crlf))
+	(modify ?question (stage main-question)))
+
 (defrule nextItem
 	?question <- (question (stage decide))
 	?g <- (goal ?i)
@@ -99,8 +113,7 @@
 		else
 			(printout t "Save for " ?i " next." crlf))
 		(modify ?question (stage main-question))
-		; ; Prevent repeat execution
-		(assert (decided))
+
 	else
 		(bind ?found 0)
 		(bind ?temp (create$))
@@ -113,8 +126,6 @@
 				(break)
 			)
 		)
-		; ; Combined item now retracted in item-combination rule in items.clp.
-		;;(if (= ?found 0) then (retract ?g))
 	)
 )
 
@@ -143,7 +154,5 @@
 (defrule resetControl
 	(declare (salience 99))
 	?r <- (resetRec)
-	?d <- (decided)
 	=>
-	(retract ?r)
-	(retract ?d))
+	(retract ?r))

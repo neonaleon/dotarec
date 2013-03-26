@@ -3,13 +3,11 @@
 ; ; Item Combination rule
 (defrule item-combination
 	(declare (salience 10))
-	?g <- (goal ?n)
 	?p <- (player (inventory $?i1))
 	(item (name ?n) (recipe $?i2))
 	(test (subsetdp $?i2 $?i1))
 	=>
 	(modify ?p (inventory (insert$ (remove-subset $?i2 $?i1) 1 ?n)))
-	(retract ?g)
 )
 
 ; ; Phase Changing Rule
