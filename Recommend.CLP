@@ -103,8 +103,10 @@
 		(assert (decided))
 	else
 		(bind ?found 0)
+		(bind ?temp (create$))
 		(loop-for-count (?a 1 (length$ $?r))
-			(if (not (subsetdp (create$ (nth$ ?a $?r)) $?inv))
+			(bind ?temp ?temp (nth$ ?a $?r))
+			(if (not (subsetdp ?temp $?inv))
 			then
 				(bind ?found 1)
 				(assert (goal (nth$ ?a $?r)))	
@@ -129,6 +131,14 @@
 	?f <- (fired ?n)
 	=>
 	(retract ?f))
+
+
+(defrule resetGoal
+	(declare (salience 100))
+	(resetRec)
+	?g <- (goal ?i)
+	=>
+	(retract ?g))
 
 (defrule resetControl
 	(declare (salience 99))
