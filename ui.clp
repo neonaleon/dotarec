@@ -5,7 +5,7 @@
 	; ; TODO if there is a player without playstyle
 	?player <- (player (playstyle NIL))
 	=>
-	(printout t "What is your playstyle?" crlf)
+	(printout t crlf "What is your playstyle?" crlf)
 	(printout t "(1) Defensive" crlf)
 	(printout t "(2) Neutral" crlf)
 	(printout t "(3) Aggressive" crlf)
@@ -27,7 +27,7 @@
 	(if
 		(= ?count -1)
 	then
-		(printout t "What are the heroes on the opposing team?" crlf)
+		(printout t crlf "What are the heroes on the opposing team?" crlf)
 		(bind ?count 0)
 		(modify ?opTeam (count ?count))
 	)
@@ -76,7 +76,7 @@
 	(team (count ?count&: (= ?count 5)))
 	(current-phase ?phase)
 	=>
-	(printout t "What would you like to do next?" crlf)
+	(printout t crlf "What would you like to do next?" crlf)
 	(printout t "(1) Get next suggestion" crlf)
 	(printout t "(2) Use/discard/sell an item" crlf)
 	(printout t "(3) End session" crlf)
@@ -102,13 +102,12 @@
 	?question <- (question (stage gold-question))
 	?player <- (player)
 	=>
-	(printout t "What is your current gold per minute? ")
+	(printout t crlf "What is your current gold per minute? ")
 	(bind ?ans-gpm (read))
 	(printout t "How much gold do you currently have? ")
 	(bind ?ans-gold (read))
 	(modify ?player (gpm ?ans-gpm) (gold ?ans-gold))
-	; ; TODO other rules that will modify question stage for situational questions
-	; ; such as whether player is being killed
+	(printout t crlf "MY SUGGESTION:" crlf)
 	(modify ?question (stage decide))
 	(assert (resetRec))
 )
@@ -118,7 +117,13 @@
 	?question <- (question (stage discard))
 	?player <- (player (inventory $?inventory))
 	=>
-	(printout t "Choose an item to remove from your inventory." crlf)
+	(if
+		(> (length $?inventory) 0)
+	then
+		(printout t crlf "Choose an item to remove from your inventory:" crlf)
+	else
+		(printout t crlf "You do not have any items at the moment." crlf)
+	)
 	(bind ?count 1)
 	(loop-for-count (length $?inventory)
 		(printout t "(" ?count ") " (nth$ ?count $?inventory) crlf)
