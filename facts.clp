@@ -188,12 +188,20 @@
 	
 	; ; Current phase.
 	
-	;;(current-phase 1)
+	(current-phase 1)
 	; ; <testing>
-	(current-phase 5)
+	;;(current-phase 5)
 	
 	; ; Recommend.
 	
+	(recommend (item "Magic Wand"))
+	(recommend (item "Bottle"))
+	(recommend (item "Perseverance"))
+	(recommend (item "Boots of Speed"))
+	(recommend (item "Power Treads"))
+	(recommend (item "Ultimate Orb"))
+	(recommend (item "Black King Bar"))
+	(recommend (item "Ghost Scepter"))
 	(recommend (item "Scythe of Vyse"))
 	(recommend (item "Monkey King Bar"))
 	(recommend (item "Shiva's Guard"))
@@ -202,4 +210,7 @@
 	
 	; ; Decided.
 	(decided)
+
+	; ; Ownage Level.
+	(ownage-level low)
 )

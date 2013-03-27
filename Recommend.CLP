@@ -80,21 +80,23 @@
 	(recommend (item ?i) (weight ?w1))
 	(not (recommend (weight ?w2&:(> ?w2 ?w1))))
 	=>
-	(assert (goal ?i)))
+	(assert (goal ?i))
+	(printout t "*** You should aim to get " ?i " now." crlf)
+	)
 	
 (defrule nextItemBOT
 	(declare (salience 100))
 	?question <- (question (stage decide))
 	?g <- (goal "Boots of Travel")
 	?p <- (player (gold ?playerG) (inventory $?inv))
-	(test (subsetp (create$ "Power Treads") $?inv)))
+	(test (subsetp (create$ "Power Treads") $?inv))
 	=>
 	(if (<= 1750 ?playerG)
 	then
-		(printout t "Sell Power Threads and buy Boots of Travel next." crlf)
+		(printout t "*** Sell Power Threads and buy Boots of Travel next." crlf)
 		(modify ?p (gold (- ?playerG 1750)) (inventory (insert$ $?inv 1 "Boots of Travel")))
 	else
-		(printout t "Save for Boots of Travel next." crlf))
+		(printout t "*** Save for Boots of Travel next." crlf))
 	(modify ?question (stage main-question)))
 
 (defrule nextItem
@@ -107,11 +109,11 @@
 	then
 		(if (<= ?itemG ?playerG)
 		then
-			(printout t "Buy " ?i " next." crlf)
+			(printout t "*** Buy " ?i " next." crlf)
 			(modify ?p (gold (- ?playerG ?itemG)) (inventory (insert$ $?inv 1 ?i)))
 			(retract ?g)
 		else
-			(printout t "Save for " ?i " next." crlf))
+			(printout t "*** Save for " ?i " next." crlf))
 		(modify ?question (stage main-question))
 
 	else
