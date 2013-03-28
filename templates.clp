@@ -46,3 +46,7 @@
 	(slot item (type STRING))
 	(slot weight (type INTEGER) (default 0))
 )
+
+(deftemplate ownage-level
+	(slot level (allowed-values low normal high))
+	)

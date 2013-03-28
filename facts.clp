@@ -174,8 +174,8 @@
 	(phase (number 1) (items "Animal Courier" "Tango" "Healing Salve" "Iron Branch" "Iron Branch"))
 	(phase (number 2) (items "Magic Wand"))
 	(phase (number 2) (items "Bottle"))
-	(phase (number 2) (items "Boots of Speed"))
-	(phase (number 3) (items "Perseverance"))
+	(phase (number 2) (items "Perseverance"))
+	(phase (number 3) (items "Boots of Speed"))
 	(phase (number 4) (items "Power Treads"))
 	(phase (number 4) (items "Ultimate Orb"))
 	(phase (number 4) (items "Black King Bar"))
@@ -188,7 +188,7 @@
 	
 	; ; Current phase.
 	
-	(current-phase 1)
+	(current-phase 2)
 	; ; <testing>
 	;;(current-phase 2)
 	
@@ -212,5 +212,5 @@
 	(decided)
 
 	; ; Ownage Level.
-	(ownage-level low)
+	(ownage-level (level low))
 )

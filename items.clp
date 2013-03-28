@@ -12,6 +12,7 @@
 
 ; ; Phase Changing Rule
 (defrule phase-change
+	(declare (salience 1)) ; phase change should happen before any recommendation
 	?cp <- (current-phase ?p)
 	(player (inventory $?i1))
 	(phase (number ?p) (items $?i2))

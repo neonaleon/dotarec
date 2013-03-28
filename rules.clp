@@ -1,29 +1,34 @@
 ;; Recommendation rules
 
 ; how well the player is doing in the game is determined by his gpm or farming rate
+; salience 1 is given so that ownage level is fired before recommendation
 (defrule low-ownage
-	?o <- (ownage-level ?x)
+	(declare (salience 1))
+	?o <- (ownage-level (level ~low))
+	(question (stage decide))
 	(player (gpm ?gpm))
-	(test (<= ?gpm 100))
+	(test (<= ?gpm 200))
 	=>
-	(modify ?o (ownage-level low))
+	(modify ?o (level low))
 	)
 
 (defrule normal-ownage
-	?o <- (ownage-level ?x)
+	(declare (salience 1))
+	?o <- (ownage-level (level ~normal))
 	(player (gpm ?gpm))
-	(test (> ?gpm 100))
-	(test (<= ?gpm 300))
+	(test (> ?gpm 200))
+	(test (<= ?gpm 400))
 	=>
-	(modify ?o (ownage-level normal))
+	(modify ?o (level normal))
 	)
 
 (defrule high-ownage
-	?o <- (ownage-level ?x)
+	(declare (salience 1))
+	?o <- (ownage-level (level ~high))
 	(player (gpm ?gpm))
-	(test (> ?gpm 300))
+	(test (> ?gpm 400))
 	=>
-	(modify ?o (ownage-level high))
+	(modify ?o (level high))
 	)
 
 ;; Rule 1 
@@ -46,9 +51,22 @@
 ;; else if neutral -> bottle
 ;; else if owning -> ring of health -> perseverance
 ;; note: have to decide how to determine owning or not
+(defrule recommend-rule-2
+	(current-phase 2)
+	?r1 <- (recommend (item "Magic Wand")(weight ?w1))
+	?r2 <- (recommend (item "Bottle")(weight ?w2))
+	?r3 <- (recommend (item "Perseverance")(weight ?w3))
+	(not (fired recommend-rule-2))
+	=>
+	(modify ?r1 (weight (+ ?w1 1)))
+	(modify ?r2 (weight (+ ?w2 1)))
+	(modify ?r3 (weight (+ ?w3 1)))
+	(assert (fired recommend-rule-2))
+	)
+
 (defrule recommend-rule-2-low
 	(current-phase 2)
-	(ownage-level low)
+	(ownage-level (level low))
 	?recommend <- (recommend (item "Magic Wand") (weight ?weight))
 	(not (fired recommend-rule-2-low))
 	=>
@@ -58,7 +76,7 @@
 
 (defrule recommend-rule-2-normal
 	(current-phase 2)
-	(ownage-level normal)
+	(ownage-level (level normal))
 	?recommend <- (recommend (item "Bottle") (weight ?weight))
 	(not (fired recommend-rule-2-normal))
 	=>
@@ -68,7 +86,7 @@
 
 (defrule recommend-rule-2-high
 	(current-phase 2)
-	(ownage-level high)
+	(ownage-level (level high))
 	?recommend <- (recommend (item "Perseverance") (weight ?weight))
 	(not (fired recommend-rule-2-high))
 	=>
@@ -91,9 +109,20 @@
 ;; Rule 4
 ;; if getting owned -> power treads
 ;; else if owning -> ultimate orb
+(defrule recommend-rule-4
+	(current-phase 4)
+	(not (fired recommend-rule-4))
+	?r1 <- (recommend (item "Power Treads")(weight ?w1))
+	?r1 <- (recommend (item "Ultimate Orb")(weight ?w2))
+	=>
+	(modify ?r1 (weight (+ ?w1 1)))
+	(modify ?r2 (weight (+ ?w2 1)))
+	(assert (fired recommend-rule-4))
+	)
+
 (defrule recommend-rule-4-treads
 	(current-phase 4)
-	(ownage-level low)
+	(ownage-level (level low))
 	(not (fired recommend-rule-4-treads))
 	?recommend <- (recommend (item "Power Treads")(weight ?weight))
 	=>
@@ -103,7 +132,7 @@
 
 (defrule recommend-rule-4-ultorb
 	(current-phase 4)
-	(ownage-level low)
+	(ownage-level (level high))
 	(not (fired recommend-rule-4-ultorb))
 	?recommend <- (recommend (item "Ultimate Orb")(weight ?weight))
 	=>
@@ -114,14 +143,14 @@
 ;; if disablers -> BKB
 ;; else if physical -> ghost scepter
 ;; note: give more weight to bkb if more disablers, more weight to ghost scepter if more physical dps
-(defrule recommend-rule-4
+(defrule recommend-rule-4-bkb-gs
 	(current-phase 4)
 	?r1 <- (recommend (item "Black King Bar") (weight ?w1))
 	?r2 <- (recommend (item "Ghost Scepter") (weight ?w2))
 	(team (count ?c) (num_disabler ?d) (num_physical ?p) (num_spell ?s) (num_useless ?u))
-	(not (fired recommend-rule-4))
+	(not (fired recommend-rule-4-bkb-gs))
 	=>
 	(modify ?r1 (weight (+ ?w1 ?d)))
 	(modify ?r2 (weight (+ ?w2 ?p)))
-	(assert (fired recommend-rule-4))
+	(assert (fired recommend-rule-4-bkb-gs))
 	)

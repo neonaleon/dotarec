@@ -145,7 +145,6 @@
 	=>
 	(retract ?f))
 
-
 (defrule resetGoal
 	(declare (salience 100))
 	(resetRec)
