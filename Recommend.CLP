@@ -50,6 +50,7 @@
 )
 
 (defrule retract-recommend
+	(declare (salience 110))
 	(current-phase ?phase&: (> ?phase 8))
 	?recommend <- (recommend)
 	=>
@@ -94,7 +95,9 @@
 	(if (<= 1750 ?playerG)
 	then
 		(printout t "*** Sell Power Threads and buy Boots of Travel next." crlf)
-		(modify ?p (gold (- ?playerG 1750)) (inventory (insert$ $?inv 1 "Boots of Travel")))
+		(bind $?inv (insert$ $?inv 1 "Boots of Travel"))
+		(bind $?inv (delete$ $?inv (member$ "Power Treads" $?inv) (member$ "Power Treads" $?inv)))
+		(modify ?p (gold (- ?playerG 1750)) (inventory $?inv)) ; ; No idea what the sale price of Power Treads is.
 	else
 		(printout t "*** Save for Boots of Travel next." crlf))
 	(modify ?question (stage main-question)))

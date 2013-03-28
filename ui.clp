@@ -84,17 +84,48 @@
 	(bind ?ans (read))
 	(switch ?ans
 		(case 1 then
-			(if
-				(<= ?phase 8)
-			then
-				(modify ?question (stage gold-question))
-			else
-				(modify ?question (stage decide))
+			;;(if
+			;;	(<= ?phase 8)
+			;;then
+			;;	(modify ?question (stage gold-question))
+			;;else
+			;;	(modify ?question (stage decide))
+			;;)
+			(switch ?phase
+				(case 1 then (modify ?question (stage initial-suggestion)))
+				(case 9 then
+					(modify ?question (stage decide))
+					(assert (resetRec))
+				)
+				(default (modify ?question (stage gold-question)))
 			)
 		)
 		(case 2 then (modify ?question (stage discard)))
 		(case 3 then (modify ?question (stage end)))
 	)
+)
+
+; ; Give initial suggestion.
+(defrule initial-suggestion
+	?question <- (question (stage initial-suggestion))
+	?player <- (player (inventory $?inventory))
+	=>
+	(printout t crlf "Does your team have an Animal/Flying Courier?" crlf)
+	(printout t "(1) Yes" crlf)
+	(printout t "(2) No" crlf)
+	(bind ?ans (read))
+	(printout t crlf "MY SUGGESTION:" crlf)
+	(switch ?ans
+		(case 1 then
+			(printout t "*** Buy 2x Tango, 1x Healing Salve, 3x Iron Branch next." crlf)
+			(modify ?player (inventory (insert$ $?inventory 1 (create$ "Tango" "Tango" "Healing Salve" "Iron Branch" "Iron Branch" "Iron Branch"))))
+		)
+		(case 2 then
+			(printout t "*** Buy Animal Courier, 1x Tango, 1x Healing Salve, 2x Iron Branch next." crlf)
+			(modify ?player (inventory (insert$ $?inventory 1 (create$ "Tango" "Healing Salve" "Iron Branch" "Iron Branch"))))
+		)
+	)
+	(modify ?question (stage main-question))
 )
 
 ; ; Ask player for gold per minute and current gold.
@@ -143,14 +174,28 @@
 (defrule ask-end
 	(question (stage end))
 	=>
-	(printout t "Would you like to start a new session? (Y/y or N/n) ")
-	(if
-		(eq (lowcase (read)) y)
-	then
-		(reset)
-		(printout t "****************************************" crlf crlf)
-	else
-		(reset)
-		(halt)
+	;;(printout t "Would you like to start a new session? (Y/y or N/n) ")
+	(printout t "Would you like to start a new session?" crlf)
+	(printout t "(1) Yes" crlf)
+	(printout t "(2) No" crlf)
+	;;(if
+	;;	(eq (lowcase (read)) y)
+	;;then
+	;;	(reset)
+	;;	(printout t "****************************************" crlf crlf)
+	;;else
+	;;	(reset)
+	;;	(halt)
+	;;)
+	(bind ?ans (read))
+	(switch ?ans
+		(case 1 then
+			(reset)
+			(printout t "****************************************" crlf crlf)
+		)
+		(case 2 then
+			(reset)
+			(halt)
+		)
 	)
 )

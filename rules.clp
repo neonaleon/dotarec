@@ -113,7 +113,7 @@
 	(current-phase 4)
 	(not (fired recommend-rule-4))
 	?r1 <- (recommend (item "Power Treads")(weight ?w1))
-	?r1 <- (recommend (item "Ultimate Orb")(weight ?w2))
+	?r2 <- (recommend (item "Ultimate Orb")(weight ?w2))
 	=>
 	(modify ?r1 (weight (+ ?w1 1)))
 	(modify ?r2 (weight (+ ?w2 1)))

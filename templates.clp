@@ -2,7 +2,7 @@
 
 ; ; Question template.
 (deftemplate question
-	(slot stage (allowed-values main-question gold-question decide discard end) (default main-question))
+	(slot stage (allowed-values main-question initial-suggestion gold-question decide discard end) (default main-question))
 )
 
 ; ; Player template.

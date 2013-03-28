@@ -171,7 +171,7 @@
 	; ; Phases.
 	
 	(phase (number 1) (items "Tango" "Tango" "Healing Salve" "Iron Branch" "Iron Branch" "Iron Branch"))
-	(phase (number 1) (items "Animal Courier" "Tango" "Healing Salve" "Iron Branch" "Iron Branch"))
+	(phase (number 1) (items "Tango" "Healing Salve" "Iron Branch" "Iron Branch"))
 	(phase (number 2) (items "Magic Wand"))
 	(phase (number 2) (items "Bottle"))
 	(phase (number 2) (items "Perseverance"))
@@ -188,7 +188,7 @@
 	
 	; ; Current phase.
 	
-	(current-phase 2)
+	(current-phase 1)
 	; ; <testing>
 	;;(current-phase 2)
 	
