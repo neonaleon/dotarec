@@ -145,6 +145,7 @@
 ;; note: give more weight to bkb if more disablers, more weight to ghost scepter if more physical dps
 (defrule recommend-rule-4-bkb-gs
 	(current-phase 4)
+	(ownage-level (level normal))
 	?r1 <- (recommend (item "Black King Bar") (weight ?w1))
 	?r2 <- (recommend (item "Ghost Scepter") (weight ?w2))
 	(team (count ?c) (num_disabler ?d) (num_physical ?p) (num_spell ?s) (num_useless ?u))
