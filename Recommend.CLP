@@ -1,54 +1,5 @@
 ; ; Recommendation Rules
 
-(defrule recommend-guinsoo
-	?recommend <- (recommend (item "Scythe of Vyse") (weight ?weight))
-	(not (fired recommend-guinsoo))
-	(current-phase 5)
-	=>
-	(modify ?recommend (weight (+ ?weight 1)))
-	(assert (fired recommend-guinsoo))
-)
-
-(defrule recommend-mkb
-	?recommend <- (recommend (item "Monkey King Bar") (weight ?weight))
-	(not (fired recommend-mkb))
-	(current-phase 6)
-	=>
-	(modify ?recommend (weight (+ ?weight 1)))
-	(assert (fired recommend-mkb))
-)
-
-(defrule recommend-shiva
-	?recommend <- (recommend (item "Shiva's Guard") (weight ?weight))
-	(not (fired recommend-shiva))
-	(current-phase 7)
-	(team (num_physical ?num_physical))
-	=>
-	; ; Each physical enemy adds 1 vote to Shiva's Guard.
-	(modify ?recommend (weight (+ ?weight ?num_physical)))
-	(assert (fired recommend-shiva))
-)
-
-(defrule recommend-manta
-	?recommend <- (recommend (item "Manta Style") (weight ?weight))
-	(not (fired recommend-manta))
-	(current-phase 7)
-	(player (gold ?gold))
-	=>
-	; ; Every 2000 gold the player has adds 1 vote to Manta Style.
-	(modify ?recommend (weight (+ ?weight (integer (/ ?gold 2000)))))
-	(assert (fired recommend-manta))
-)
-
-(defrule recommend-bot
-	?recommend <- (recommend (item "Boots of Travel") (weight ?weight))
-	(not (fired recommend-bot))
-	(current-phase 8)
-	=>
-	(modify ?recommend (weight (+ ?weight 1)))
-	(assert (fired recommend-bot))
-)
-
 (defrule retract-recommend
 	(declare (salience 110))
 	(current-phase ?phase&: (> ?phase 8))
