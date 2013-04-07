@@ -69,7 +69,6 @@
 		else
 			(printout t "*** Save for " ?i " next." crlf))
 		(modify ?question (stage main-question))
-
 	else
 		(bind ?found 0)
 		(bind ?temp (create$))

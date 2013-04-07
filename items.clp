@@ -8,6 +8,12 @@
 	(test (subsetdp $?i2 $?i1))
 	=>
 	(modify ?p (inventory (insert$ (remove-subset $?i2 $?i1) 1 ?n)))
+	(printout t crlf "ITEMS COMBINED: " crlf)
+	(loop-for-count (?x 1 (length$ $?i2))
+					(printout t (nth$ ?x $?i2))
+					(if (< ?x (length$ $?i2))
+						then (printout t ", "))) 
+	(printout t " were combined into " ?n crlf)
 )
 
 ; ; Phase Changing Rule

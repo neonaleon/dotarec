@@ -45,10 +45,13 @@
 ; ;			- easier to just let player choose to inform system whenever item is removed
 (defrule ask-next-action
 	?question <- (question (stage main-question))
-	(player (playstyle ~NIL))
+	(player (playstyle ~NIL) (inventory $?inv))
 	(team (count ?count&: (= ?count 5)))
 	(current-phase ?phase)
 	=>
+	(printout t crlf "YOUR INVENTORY NOW: " crlf)
+	(loop-for-count (?x 1 (length$ $?inv))
+		(printout t (nth$ ?x $?inv) crlf))
 	(printout t crlf "What would you like to do next?" crlf)
 	(printout t "(1) Get next suggestion" crlf)
 	(printout t "(2) Use/discard/sell an item" crlf)
@@ -104,7 +107,7 @@
 ; ; Ask player for gold per minute and current gold.
 (defrule ask-gold
 	?question <- (question (stage gold-question))
-	?player <- (player)
+	?player <- (player (inventory $?inventory))
 	=>
 	(printout t crlf "What is your current gold per minute? ")
 	(bind ?ans-gpm (read))
