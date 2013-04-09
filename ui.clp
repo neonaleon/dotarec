@@ -1,23 +1,23 @@
 ; ; User Interface Rules
 
 ; ; Ask player for his/her playing style.
-(defrule ask-playstyle
+;;(defrule ask-playstyle
 	; ; TODO if there is a player without playstyle
-	?player <- (player (playstyle NIL))
-	=>
-	(printout t crlf "What is your playstyle?" crlf)
-	(printout t "(1) Defensive" crlf)
-	(printout t "(2) Neutral" crlf)
-	(printout t "(3) Aggressive" crlf)
-	(printout t "(other) Stop program" crlf)
-	(bind ?ans (read))
-	(switch ?ans
+;;	?player <- (player (playstyle NIL))
+;;	=>
+;;	(printout t crlf "What is your playstyle?" crlf)
+;;	(printout t "(1) Defensive" crlf)
+;;	(printout t "(2) Neutral" crlf)
+;;	(printout t "(3) Aggressive" crlf)
+;;	(printout t "(other) Stop program" crlf)
+;;	(bind ?ans (read))
+;;	(switch ?ans
 		; ; TODO modify player playstyle
-		(case 1 then (modify ?player (playstyle defensive)))
-		(case 2 then (modify ?player (playstyle neutral)))
-		(case 3 then (modify ?player (playstyle aggressive)))
-	)
-)
+;;		(case 1 then (modify ?player (playstyle defensive)))
+;;		(case 2 then (modify ?player (playstyle neutral)))
+;;		(case 3 then (modify ?player (playstyle aggressive)))
+;;	)
+;;)
 
 ; ; Find out what heroes are on the opposing team.
 (defrule ask-opponents
@@ -45,7 +45,7 @@
 ; ;			- easier to just let player choose to inform system whenever item is removed
 (defrule ask-next-action
 	?question <- (question (stage main-question))
-	(player (playstyle ~NIL) (inventory $?inv))
+	(player (inventory $?inv))
 	(team (count ?count&: (= ?count 5)))
 	(current-phase ?phase)
 	=>

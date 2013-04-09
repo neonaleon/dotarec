@@ -16,17 +16,6 @@
 	(modify ?question (stage main-question))
 )
 
-(defrule recommend-town-portal
-	?recommend <- (recommend (item "Town Portal Scroll"))
-	(player (inventory $?i))
-	(or (test (subsetp (create$ "Boots of Speed") $?i))
-		(test (subsetp (create$ "Power Treads") $?i)))
-	;; (not (test (subsetp (create$ "Boots of Travel") $?i)))	
-	(not (test (subsetp (create$ "Town Portal Scroll") $?i)))
-	=>
-	(modify ?recommend (weight 1000))
-)
-
 (defrule decision
 	(declare (salience -1))
 	(recommend (item ?i) (weight ?w1))

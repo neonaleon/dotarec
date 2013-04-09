@@ -194,6 +194,7 @@
 	
 	; ; Recommend.
 	
+	(recommend (item "Town Portal Scroll"))
 	(recommend (item "Magic Wand"))
 	(recommend (item "Bottle"))
 	(recommend (item "Perseverance"))
